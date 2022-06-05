@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./TinderCard.css";
 import Tindercard from "react-tinder-card";
+import axios from "./axios";
 
 function TinderCard() {
   const onSwipe = (direction) => {
@@ -11,16 +12,15 @@ function TinderCard() {
     console.log(myIdentifier + " left the screen");
   };
 
-  const [people, setPeople] = React.useState([
-    {
-      name: "Elon Musk",
-      url: "https://imageio.forbes.com/specials-images/imageserve/5f47d4de7637290765bce495/0x0.jpg?format=jpg&crop=2146,2145,x1699,y559,safe&height=416&width=416&fit=bounds",
-    },
-    {
-      name: "Jeff Bezos",
-      url: "https://cdn.britannica.com/56/199056-050-CCC44482/Jeff-Bezos-2017.jpg",
-    },
-  ]);
+  const [people, setPeople] = React.useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const req = await axios.get("/fetchCard");
+      setPeople(req.data)
+    }
+    fetchData()
+  },[]);
+
   return (
     <div className="tinder_cards">
       <div className="tinder_card_container">
@@ -34,7 +34,7 @@ function TinderCard() {
           >
             <div
               style={{
-                backgroundImage: "url(" + person.url + ")",
+                backgroundImage: "url(" + person.imgUrl + ")",
               }}
               className="card"
             >
