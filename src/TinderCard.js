@@ -3,6 +3,14 @@ import "./TinderCard.css";
 import Tindercard from "react-tinder-card";
 
 function TinderCard() {
+  const onSwipe = (direction) => {
+    console.log("You swiped: " + direction);
+  };
+
+  const onCardLeftScreen = (myIdentifier) => {
+    console.log(myIdentifier + " left the screen");
+  };
+
   const [people, setPeople] = React.useState([
     {
       name: "Elon Musk",
@@ -16,12 +24,24 @@ function TinderCard() {
   return (
     <div className="tinder_cards">
       <div className="tinder_card_container">
-        {people.map(person => {
-         return <Tindercard
-         className="swipe" key={person.name} preventSwipe={["up,down"]} onSwipe={(dir)=>{
-             
-         }}></Tindercard>
-        })}
+        {people.map((person) => (
+          <Tindercard
+            className="swipe"
+            key={person.name}
+            onSwipe={onSwipe}
+            onCardLeftScreen={() => onCardLeftScreen("fooBar")}
+            preventSwipe={["up", "down"]}
+          >
+            <div
+              style={{
+                backgroundImage: "url(" + person.url + ")",
+              }}
+              className="card"
+            >
+              <h3>{person.name}</h3>
+            </div>
+          </Tindercard>
+        ))}
       </div>
     </div>
   );
